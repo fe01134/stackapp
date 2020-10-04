@@ -1,0 +1,11 @@
+---
+ref: monitor
+name: monitor
+description: Starter Pack for StackStorm for Monitor Python Actions
+keywords: 
+    - monitor
+    - stackstorm
+    - st2
+version: 0.1.0
+author: Carlos Ferreira
+email: carlosyells@yahoo.com
