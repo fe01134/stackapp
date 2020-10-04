@@ -1,7 +1,7 @@
 ---
 name: nasa_apod
 pack: monitor
-description: "copy of etc/nasa_apod.py"
+description: "Example monitor python script nasa_apod.py"
 runner_type: "local-shell-script"
 enabled: true
 entry_point: nasa_apod.py
