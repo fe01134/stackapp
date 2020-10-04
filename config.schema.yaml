@@ -1,0 +1,21 @@
+
+---
+  api_key:
+    description: "API key"
+    type: "string"
+    secret: false
+    required: false
+  api_secret:
+    description: "API secret"
+    type: "string"
+    secret: false
+    required: false
+  region:
+    description: "API region to use"
+    type: "string"
+    required: false
+    default: "us-east-1"
+  private_key_path:
+    description: "Path to the private key file to use"
+    type: "string"
+    required: false
