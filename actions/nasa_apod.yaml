@@ -1,6 +1,6 @@
 ---
 name: nasa_apod
-pack: tutorial
+pack: monitor
 description: "copy of etc/nasa_apod.py"
 runner_type: "local-shell-script"
 enabled: true

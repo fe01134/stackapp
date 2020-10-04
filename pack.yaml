@@ -1,6 +1,6 @@
 ---
-ref: monitor
-name: monitor
+ref: stackstorm
+name: stackstorm
 description: Starter Pack for StackStorm for Monitor Python Actions
 keywords: 
     - monitor
