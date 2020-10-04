@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # Description:
 #   Queries NASA's APOD (Astronomy Picture Of the Day) API to get the link to the picture
