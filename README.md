@@ -9,30 +9,59 @@ the excellent [StackStorm documentation](https://docs.stackstorm.com/) page.
 
 ## Prep Instructions
 
-Please visit the following and complete the [prep instructions](https://gist.github.com/nmaludy/21c403d98eaf13f2accfd85e68dadb9c)
+-  Install Docker
+-  Install Stackstorm Docker Container
 
-## Steps
+### Steps
 
-### Install Stackstorm using Docker
+#### Install Stackstorm using Docker
 https://github.com/StackStorm/st2-docker
 https://docs.stackstorm.com/install/docker.html
-git clone https://github.com/StackStorm/st2-docker.git
-cd st2-docker
 
-###  Start image and mount directory 
-cd /Users/carlos.ferreira1ibm.com/ws/st2-docker
-docker-compose exec st2client bash -v /src/webapp:/webapp training/webapp 
-docker-compose exec st2client bash
-open browser 
+    git clone https://github.com/StackStorm/st2-docker.git
+    cd st2-docker
+
+####  Start Stackstorm client Image and Optionally Mount Host Directory 
+
+    cd /Users/carlos.ferreira1ibm.com/ws/st2-docker
+    docker-compose exec st2client bash -v /src/webapp:/webapp training/webapp 
+    docker-compose exec st2client bash
+    
+ Output
+
+    Welcome to StackStorm HA v3.3dev (Ubuntu 18.04.5 LTS GNU/Linux x86_64)
+    * Documentation: https://docs.stackstorm.com/
+    * Community: https://stackstorm.com/community-signup
+    * Forum: https://forum.stackstorm.com/
+     * Enterprise: https://stackstorm.com/#product
+    
+     Here you can use StackStorm CLI. Examples:
+       st2 action list --pack=core
+       st2 run core.local cmd=date
+       st2 run core.local_sudo cmd='apt-get update' --tail
+       st2 execution list
+       
+- Open browser with URL localhost to
+- Login using  user id `st2admin`  and password `Ch@ngeMe`
+
 docker-compose exec st2client st2 --version
 
-### To SSH Into a Container
-docker ps
-CONTAINER ID        IMAGE                                  			 COMMAND                  CREATED             STATUS          PORTS        NAMES
-a31cd9580b2f        stackstorm/st2actionrunner:3.3dev       "/st2client-startup.…"   3 days ago          Up 3 days                           st2-docker_st2client_1
-docker exec -it st2-docker_st2client_1 /bin/bash
+#### SSH Into a Stackstorm st2client_1 Container
 
-###  Create a package 
+Open a terminal window on your host.  Check if the Stackstorm docker container is installed and running.
+
+    docker ps
+
+Output
+
+    CONTAINER ID        IMAGE                                  			 COMMAND                  CREATED             STATUS          PORTS        NAMES
+    a31cd9580b2f        stackstorm/st2actionrunner:3.3dev       "/st2client-startup.…"   3 days ago          Up 3 days                           st2-docker_st2client_1
+
+Invoke command line shell to run Stackstorm commands
+
+    docker exec -it st2-docker_st2client_1 /bin/bash
+
+## Create Your First Stackstorm Package 
 Using these directions 
 https://docs.stackstorm.com/reference/packs.html
 
@@ -66,17 +95,39 @@ st2 pack install https://github.com/encoretechnologies/stackstorm-tutorial.git
 +-------------+-------------------------------------------------------+
 
 ###  Install tutorial actions and rules  (from outside the stackstorm container)
-cd /Users/carlos.ferreira1ibm.com/ws/st2-docker
-docker-compose exec st2client st2 pack install https://github.com/fe01134/stackapp.git
+
+    cd /Users/carlos.ferreira1ibm.com/ws/st2-docker
+    docker-compose exec st2client st2 pack install https://github.com/fe01134/stackapp.git
 
 ### Test run the  action 
-In the st2 image directory /opt/stackstorm/packs/tutorial/actions/
-- Test python script and put it in the  actions directory
-cd /opt/stackstorm/pack
-docker-compose exec st2client st2 run monitor.nasa_apod date=2018-07-04
+In the st2 image directory /opt/stackstorm/packs/monitor/actions/
+Test python script and put it in the  actions directory
+
+    cd /opt/stackstorm/pack
+    docker-compose exec st2client st2 run monitor.nasa_apod date=2018-07-04
 
 ### Register the action 
-st2ctl reload --register-actions
+
+    st2ctl reload --register-actions
 
 ### Run with debug pack monitor with input arguement date
-st2 --debug run monitor date=2018-07-04
+
+    st2 --debug run monitor date=2018-07-04
+
+## Install and Use 
+First, install the rabbitmq pack from the public StackStorm exchange.
+
+    st2 pack install rabbitmq
+
+Configure RabbitMQ queue
+Create a queue in RabbitMQ where messages will be sent
+
+    rabbitmqadmin declare exchange name=demo type=topic durable=false
+    rabbitmqadmin declare queue name=demoqueue
+    rabbitmqadmin declare binding source=demo destination=demoqueue routing_key=demokey
+
+Test out the RabbitMQ pack
+st2 run rabbitmq.publish_message host=127.0.0.1 exchange=demo exchange_type=topic routing_key=demokey message="test"
+Read from the queue to see if our message was delivered:
+
+rabbitmqadmin get queue=demoqueue count=99
