@@ -1,0 +1,9 @@
+---
+    trigger: "core.st2.webhook"
+    payload:
+      source:
+          bodb: "Kami_"
+          host: "gateway/web/irccloud.com/x-uvv"
+      channel: "#stackstorm"
+      timestamp: 1419166748,
+      message: "stackstorm is cool!"
