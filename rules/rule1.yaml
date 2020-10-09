@@ -12,10 +12,11 @@ trigger:
 
 criteria:
   trigger.body.name:
-    type: "equals"
     pattern: "Rules"
+    type: "equals"
+
 
 action:
   ref: core.echo
   parameters:
-    message: "{{trigger}"
+    message: "{{trigger}}"
