@@ -1,6 +1,9 @@
 ---
-    trigger: "core.st2.webhook"
-    payload:
-      source:
-          name: "Rules"
-      message: "stackstorm is cool!"
+  name: "monitor_instance1"
+  pack: "monitor"
+
+      trigger: "core.st2.webhook"
+      payload:
+        source:
+            name: "Rules"
+        message: "stackstorm is cool!"
