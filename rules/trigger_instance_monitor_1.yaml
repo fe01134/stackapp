@@ -5,5 +5,5 @@
       trigger: "core.st2.webhook"
       payload:
         source:
-            name: "Rules"
+          name: "Rules"
         message: "stackstorm is cool!"
